@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    environment:
+      APP_NAME: baseline
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql://baseline:baseline@db:5432/baseline
+    depends_on:
+      - db
+    # The sample app prints once and exits. For a long-running service,
+    # change CMD in the Dockerfile and this container will stay up.
+
+  # Postgres is here so a data-backed project works out of the box.
+  # Delete this service (and the `depends_on` above) if you don't need it.
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: baseline
+      POSTGRES_PASSWORD: baseline
+      POSTGRES_DB: baseline
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
